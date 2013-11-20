@@ -22,7 +22,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	UILabel *_toLabel;
 	UIButton *_addButton;
 	UILabel *_summaryLabel;
-	UIView *_lineView;
 	NSArray *_updatingConstraints; // NSLayoutConstraint
     NSArray *_addButtonHiddenConstraints; // NSLayoutConstraint
 	

@@ -52,6 +52,8 @@
  */
 @property (nonatomic) BOOL searching;
 
+@property (nonatomic, strong) UIView *lineView;
+
 /** Animate changes to searching.
  
  Sets searching either animated or not. Note that this calls setSearching: inside of an animation block if needed.
