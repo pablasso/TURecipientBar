@@ -47,6 +47,7 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
     recipientsBar.showsAddButton = NO;
     recipientsBar.lineView.backgroundColor = [UIColor clearColor];
     recipientsBar.textField.keyboardType = UIKeyboardTypeEmailAddress;
+    recipientsBar.scrollEnabled = YES;
     return recipientsBar;
 }
 
@@ -299,7 +300,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		[self _scrollToBottomAnimated:YES];
 		
 		if (_searching) {
-			self.scrollEnabled = NO;
 			_lineView.hidden = NO;
 			_lineView.backgroundColor = [UIColor colorWithWhite:0.557 alpha:1.000];
 			
@@ -546,13 +546,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
     if (_searching) {
 		[self _scrollToBottomAnimated:NO];
 	}
-    
-    
-	if (_textField.isFirstResponder && self.contentSize.height > self.frame.size.height && !_searching) {
-		self.scrollEnabled = YES;
-	} else {
-		self.scrollEnabled = NO;
-	}
 }
 
 - (void)_frameChanged
@@ -561,12 +554,6 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 		[self _setNeedsRecipientLayout];
 	}
     
-    if (_textField.isFirstResponder && self.contentSize.height > self.frame.size.height && !_searching) {
-		self.scrollEnabled = YES;
-	} else {
-		self.scrollEnabled = NO;
-	}
-	
 	if (_textField.isFirstResponder
         && _selectedRecipient == nil
 		&& (self.bounds.size.width != _lastKnownSize.width || self.bounds.size.height != _lastKnownSize.height)) {
@@ -768,18 +755,10 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 - (void)textFieldDidBeginEditing:(UITextField *)textField;
 {
     [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut animations:^{
-        for (UIView *recipientView in _recipientViews) {
-            recipientView.alpha = 1.0;
-        }
-        _textField.alpha = 1.0;
-        _addButton.alpha = 1.0;
-        
-        _summaryLabel.alpha = 0.0;
-        
-        
+        _summaryLabel.alpha = 0.0f;
+        _textField.alpha = 1.0f;
         [self setNeedsLayout];
         [self.superview layoutIfNeeded];
-        
         [self _scrollToBottomAnimated:YES];
     } completion:^(BOOL finished) {
         if ([self.recipientsBarDelegate respondsToSelector:@selector(recipientsBarTextDidBeginEditing:)]) {
@@ -796,23 +775,16 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 	}
 	
 	if (should) {
-        // we want the animation to execute after the text field has resigned first responder
-        
+       // we want the animation to execute after the text field has resigned first responder
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut animations:^{
-				self.scrollEnabled = NO;
-				
-				for (UIView *recipientView in _recipientViews) {
-					recipientView.alpha = 0.0;
-				}
-				_textField.alpha = 0.0;
-				_addButton.alpha = 0.0;
-				
-				_summaryLabel.alpha = 1.0;
-				
+                if ([self.recipients count] == 0) {
+                    _summaryLabel.alpha = 1.0;
+                    _textField.alpha = 0.0f;
+                }
+                
 				[self setNeedsLayout];
 				[self.superview layoutIfNeeded];
-				
                 [self setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 			} completion:^(BOOL finished) {
 				if ([self.recipientsBarDelegate respondsToSelector:@selector(recipientsBarTextDidEndEditing:)]) {
