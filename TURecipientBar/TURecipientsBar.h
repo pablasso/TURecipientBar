@@ -63,6 +63,7 @@
  */
 - (void)setSearching:(BOOL)searching animated:(BOOL)animated;
 
++ (instancetype)standaloneBarWithFrame:(CGRect)frame;
 
 /**---------------------------------------------------------------------------------------
  * @name Accessing Views

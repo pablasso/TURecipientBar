@@ -41,6 +41,14 @@ void *TURecipientsSelectionContext = &TURecipientsSelectionContext;
 
 @synthesize labelTextAttributes = _labelTextAttributes;
 
++ (instancetype)standaloneBarWithFrame:(CGRect)frame {
+    TURecipientsBar *recipientsBar = [[TURecipientsBar alloc] initWithFrame:frame];
+    recipientsBar.label = @"";
+    recipientsBar.showsAddButton = NO;
+    recipientsBar.lineView.backgroundColor = [UIColor clearColor];
+    recipientsBar.textField.keyboardType = UIKeyboardTypeEmailAddress;
+    return recipientsBar;
+}
 
 - (void)setPlaceholder:(NSString *)placeholder
 {
