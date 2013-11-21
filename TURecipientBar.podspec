@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name         = "TURecipientBarStandalone"
-  s.version      = "0.1"
+  s.name         = "TURecipientBar"
+  s.version      = "2.0"
   s.summary      = "A UIView to handle entering recipients similar to iOS Mail."
   s.homepage     = "http://github.com/davbeck/TURecipientBar"
   s.license      = 'BSD'
